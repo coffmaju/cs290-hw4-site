@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity 12 – Submit the Order JSON to PHP</title>
+  <link rel="stylesheet" href="../css/cs290-hw4-backup.css">
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <h1>CS 290 HW4 Backup Materials</h1>
+  <p>Activities 9–12 and HW4 instructions</p>
+</div></header>
+<nav class="site-nav"><div class="site-nav-inner">
+  <a href="../index.html">Home</a>
+  <a href="../homework/cs290-hw4.html">HW4</a>
+  <a href="cs290-activity9.html">Activity 9</a>
+  <a href="cs290-activity10.html">Activity 10</a>
+  <a href="cs290-activity11.html">Activity 11</a>
+  <a href="cs290-activity12.html">Activity 12</a>
+</div></nav>
+<main class="content-page">
+
+<h2>Activity 12 – Submit the Order JSON to PHP</h2>
+<p>In Activity 11, you built an order object and previewed a receipt on your page. In this activity, you will submit that order to <a href="../starter-files/menu-order-template.php" target = "_blank"><code>menu-order.php</code></a> so the server can process it.</p>
+<p class="callout"><strong>Big idea:</strong> Your JavaScript shows a preview for the user. The PHP page receives the same data and calculates the total again so you can compare the results.</p>
+<hr/>
+<h3>What You Will Build</h3>
+<ul>
+<li>A hidden input that stores the full order object as JSON</li>
+<li>A hidden input that stores the selected city’s tax rate</li>
+<li>A submit event handler that fills both hidden inputs</li>
+<li>A confirmation page (<code>menu-order.php</code>) that displays the result</li>
+</ul>
+<hr/>
+<h3>Step 1: Update the Form Action</h3>
+<p>Your form should now submit to <code>menu-order.php</code> instead of <code>order.php</code>.</p>
+<pre>&lt;form id="order-form" action="menu-order.php" method="post" target="_blank"&gt;</pre>
+<p class="callout"><strong>Note:</strong> Using <code>target="_blank"</code> opens the PHP confirmation page in a new tab so you can compare it with your receipt preview.</p>
+<hr/>
+<h3>Step 2: Add Hidden Inputs</h3>
+<p>In HTML forms, the <code>&lt;input type="hidden"&gt;</code> element allows you to include data that is submitted to the server but is not visible or editable by the user in the browser window. It requires a <code>name</code> and a <code>value</code> to be useful. JavaScript can dynamically read or change the value of the hidden inputs, making them useful for capturing client-side data.</p>
+<p>The order object exists in JavaScript. To submit it with the form, convert it to JSON and store it in a hidden input.   </p>
+<p>You will also send the tax rate based on the selected city:</p>
+<pre>taxRates[order.city]</pre>
+<p>Add these inside your form:</p>
+<pre>&lt;input type="hidden" name="orderJson" id="orderJson" value="[]"&gt;
+&lt;input type="hidden" name="taxRate" id="taxRate" value="0"&gt;</pre>
+<hr/>
+<h3>
+    Step 3: Fill Hidden Inputs on Submit
+</h3>
+<p>
+When the user clicks the submit button in the form with 
+<code>id="order-form"</code>, the order object is built and stored in the hidden input 
+<code>orderJson</code>. The tax rate for the selected city is stored in the hidden input 
+<code>taxRate</code>.
+</p>
+<p>
+This ensures the hidden fields contain the most current order selections before the form is submitted. 
+After the event listener finishes running, the form submission sends all form field values to the server.
+</p>
+<pre>document.getElementById("order-form").addEventListener("submit", function () {
+
+  const order = buildOrderObject();
+
+  // Fill hidden inputs
+  document.getElementById("orderJson").value =
+      JSON.stringify(order);
+
+  document.getElementById("taxRate").value =
+      taxRates[order.city];
+
+});</pre>
+<div class="callout important">
+<p>
+        This activity uses <strong>two separate actions</strong>:
+        previewing the order and submitting the order.
+    </p>
+<strong>Preview Button:</strong>
+<ul>
+<li>Uses JavaScript only</li>
+<li>Displays the receipt on the page</li>
+<li>Does <strong>NOT</strong> send data to the server</li>
+</ul>
+<strong>Submit Button:</strong>
+<ul>
+<li>Sends data to PHP</li>
+<li>Uses hidden inputs</li>
+<li>Opens a new page or tab with the confirmation</li>
+</ul>
+</div>
+<hr/>
+<h3>Step 4: Use the Provided menu-order.php File</h3>
+<p>You are given a working <code>menu-order.php</code> file.</p>
+<p>This file already:</p>
+<ul>
+<li>Receives the submitted order JSON</li>
+<li>Decodes the JSON into a PHP array</li>
+<li>Calculates subtotal, tax, tip, delivery fee, and total</li>
+</ul>
+<p class="callout"><strong>Important:</strong> You are NOT expected to write the PHP calculation logic.</p>
+<p><strong>Also important:</strong> The order JSON already includes item prices, so the PHP file uses those values directly.</p>
+<hr/>
+<h3>Step 5: Compare the Results</h3>
+<p>Test your project:</p>
+<ol>
+<li>Select items and options</li>
+<li>Click <strong>Preview Receipt</strong></li>
+<li>Click <strong>Submit</strong></li>
+<li>Compare the two results</li>
+</ol>
+<p><strong>Compare:</strong></p>
+<ul>
+<li>Subtotal</li>
+<li>Tax</li>
+<li>Tip</li>
+<li>Delivery Fee</li>
+<li>Total</li>
+</ul>
+<p>The values on the PHP page should match your JavaScript receipt preview.</p>
+<hr/>
+<h3>Step 6: Style the Confirmation Page</h3>
+<p>Update <code>menu-order.php</code> so it matches your Byte Bistro site.</p>
+<ul>
+<li>Add your stylesheet links</li>
+<li>Add your header</li>
+<li>Add your navigation bar</li>
+<li>Add your footer</li>
+</ul>
+<p>This page serves as your order confirmation page.</p>
+<hr/>
+<h3>Before You Finish</h3>
+<ul class="checklist">
+<li>[ ] Form submits to <code>menu-order.php</code></li>
+<li>[ ] Form uses <code>target="_blank"</code></li>
+<li>[ ] Hidden input <code>orderJson</code> is included</li>
+<li>[ ] Hidden input <code>taxRate</code> is included</li>
+<li>[ ] Submit event fills both inputs</li>
+<li>[ ] Receipt preview updates on submit</li>
+<li>[ ] PHP page displays results</li>
+<li>[ ] PHP results match JavaScript preview</li>
+<li>[ ] Confirmation page is styled</li>
+</ul>
+
+</main>
+<footer class="site-footer"><div>Backup copy for CS 290 HW4. Use Canvas for official submission when available.</div></footer>
+</body>
+</html>

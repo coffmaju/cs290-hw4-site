@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity 9 – Clickable Menu Items</title>
+  <link rel="stylesheet" href="../css/cs290-hw4-backup.css">
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <h1>CS 290 HW4 Backup Materials</h1>
+  <p>Activities 9–12 and HW4 instructions</p>
+</div></header>
+<nav class="site-nav"><div class="site-nav-inner">
+  <a href="../index.html">Home</a>
+  <a href="../homework/cs290-hw4.html">HW4</a>
+  <a href="cs290-activity9.html">Activity 9</a>
+  <a href="cs290-activity10.html">Activity 10</a>
+  <a href="cs290-activity11.html">Activity 11</a>
+  <a href="cs290-activity12.html">Activity 12</a>
+</div></nav>
+<main class="content-page">
+
+<h2>Activity 9 – Clickable Menu Items</h2>
+<p>In this activity, you will build a new interactive menu page for Byte Bistro. Customers will be able to click on menu items, enter a quantity, and confirm or remove their selection.  In this activity, you will log actions to the console. The Live Order sidebar will be added in Activity 10.</p>
+<p>This activity sets up the first part of Homework 4.</p>
+<hr/>
+<h3>What You Will Build</h3>
+<ul>
+<li>Clickable menu items for entrées, beverages, and desserts</li>
+<li>A quantity input that appears when an item is selected</li>
+<li>Confirm and remove controls for each selected item</li>
+<li>Data attributes for item name, price, and category</li>
+<li>Console output showing selected item information and quantity changes</li>
+</ul>
+<p class="callout"><strong>Important:</strong> In this activity, you will log actions to the console. Storing selections in arrays and displaying them in the Live Order sidebar will happen in Activity 10.</p>
+<hr/>
+<h3>Files You Will Use</h3>
+<ul>
+<li><strong>menu-order.html</strong> – new interactive menu page</li>
+<li><strong>style-menu-onid.css</strong> – new CSS file for this page</li>
+<li><strong>menu-interact.js</strong> – new JavaScript file for click and quantity behavior</li>
+<li><strong>process-orders.js</strong> – renamed from your Activity 8 JavaScript file and used later in HW4</li>
+<li><strong>orders.js</strong> – sample data from the previous JavaScript activity</li>
+</ul>
+<hr/>
+<h3>Step 1: Setup Your Folder</h3>
+<p>Copy all files from your HW2 folder into your HW4 folder before starting. You are building on your existing Byte Bistro site.</p>
+<p>Your structure should look similar to this:</p>
+<pre>hw4/
+├── index.html
+├── menu.html
+├── order.html
+├── menu-order.html        ← new interactive menu page
+├── reviews.html
+├── style/
+│   ├── style.css
+│   ├── style-custom-onid.css
+│   └── style-menu-onid.css  ← new style page
+├── js/
+│   ├── menu-interact.js   ← new JavaScript page 
+│   ├── process-orders.js
+│   └── orders.js
+├── images/</pre>
+<hr/>
+<h3>Step 2: Create menu-order.html</h3>
+<p>Create a new page named <strong>menu-order.html</strong>.</p>
+<ul>
+<li>Reuse the same header, navigation, and footer as your existing Byte Bistro pages.</li>
+<li>Link your existing stylesheets.</li>
+<li>Link your new menu stylesheet.</li>
+<li>Add your new JavaScript file using <strong>defer</strong>.</li>
+</ul>
+<p>Add this script link before the closing body tag:</p>
+<pre>&lt;script src="js/menu-interact.js" defer&gt;&lt;/script&gt;</pre>
+<p>Group items into categories using a responsive layout with the <span>menu-grid</span> class.</p>
+<pre>&lt;h2&gt;Entrées&lt;/h2&gt;
+&lt;section class="menu-grid entree-grid"&gt;
+  &lt;!-- 4 entrée items here --&gt;
+&lt;/section&gt;
+
+&lt;h2&gt;Beverages&lt;/h2&gt;
+&lt;section class="menu-grid beverage-grid"&gt;
+  &lt;!-- 3 beverage items here --&gt;
+&lt;/section&gt;
+
+&lt;h2&gt;Desserts&lt;/h2&gt;
+&lt;section class="menu-grid dessert-grid"&gt;
+  &lt;!-- 2 dessert items here --&gt;
+&lt;/section&gt;</pre>
+<p class="callout">The category-specific classes (entree-grid, beverage-grid, dessert-grid) are included for future styling. In this activity, you may use the same layout for all sections. You can adjust sizes and layout later when polishing your HW4 site.</p>
+<hr/>
+<h3>Step 3: Create Menu Items with Data Attributes</h3>
+<p>Each menu item should be placed inside a div with the class <span>menu-item</span>. Each item should also include data attributes for category, name, and price.</p>
+<p>The quantity input and buttons are grouped together so they can be shown, hidden, and updated as a unit.</p>
+<pre>&lt;div class="menu-item" data-category="entree" data-name="Byte Burger" data-price="11.25"&gt;
+  &lt;img src="images/byte-burger.jpg" alt="Byte Burger"&gt;
+  &lt;h3&gt;Byte Burger&lt;/h3&gt;
+  &lt;p&gt;Veggie patty on brioche&lt;/p&gt;
+  &lt;p class="price"&gt;$11.25&lt;/p&gt;
+
+  &lt;div class="input-controls"&gt;
+    &lt;input type="number" class="qty-input" min="1" style="display: none;"&gt;
+    &lt;button class="confirm-btn" style="display: none;"&gt;✔&lt;/button&gt;
+    &lt;button class="remove-btn" style="display: none;"&gt;✖&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+<p><strong>You must include:</strong></p>
+<ul>
+<li>At least <strong>4 entrées</strong></li>
+<li>At least <strong>3 beverages</strong></li>
+<li>At least <strong>2 desserts</strong></li>
+</ul>
+<p class="callout"><strong>Important:</strong> Use your own menu items and prices. The names and prices in your HTML must match the names and prices you later use in your JavaScript.</p>
+<hr/>
+<h3>Step 4: Add CSS Styling</h3>
+<p>Add your styling to <strong>style-menu-onid.css</strong>. You may use your earlier image styling from the dessert activity, but you should add layout and selection styling for the new interactive menu.</p>
+<pre>.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: YYpx;
+  padding: 1rem;
+}
+
+.menu-item {
+  border: Ypx solid #XXX;
+  padding: 1rem;
+  border-radius: YYpx;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.menu-item.selected {
+  border: 2px solid #XXX;
+  background-color: #XXX;
+}
+.menu-item img {
+ width: 100%;
+ height: YYYpx;
+ object-fit: cover;
+}
+
+.qty-input {
+  margin-top: YYpx;
+  width: YYpx;
+}
+
+.confirm-btn,
+.remove-btn {
+   width: 28px;
+   height: 28px;
+   margin-left: 6px;
+   padding: 0;
+   border: 1px solid #XXX;
+   border-radius: 50%;
+   background-color: white;
+   font-size: 14px;
+   cursor: pointer;
+}
+
+/* Hover feedback */
+.confirm-btn:hover {
+   background-color: #XXX;
+}
+
+.remove-btn:hover {
+   background-color: #XXX;
+}</pre>
+<p>You may customize colors, borders, spacing, and image styling to match the design of your Byte Bistro site.  <em>Replace<span> </span><code>XXX</code><span> </span>with colors and<span> </span><code>YYpx</code><span> </span>with spacing (like<span> </span><code>16px</code><span> </span>or<span> </span><code>24px</code>).</em></p>
+<hr/>
+<h3>Step 5: Understand dataset</h3>
+<p>When you write an HTML element like this:</p>
+<pre>&lt;div class="menu-item" data-name="Byte Burger" data-price="11.25"&gt;&lt;/div&gt;</pre>
+<p>JavaScript can access those <span>data-*</span> attributes using the <span>dataset</span> property.</p>
+<pre>const name = item.dataset.name;        // "Byte Burger"
+const price = item.dataset.price;      // "11.25" as a string
+const category = item.dataset.category;</pre>
+<ul>
+<li><span>data-name</span> becomes <span>dataset.name</span></li>
+<li><span>data-price</span> becomes <span>dataset.price</span></li>
+<li><span>data-category</span> becomes <span>dataset.category</span></li>
+</ul>
+<p>Use <span>parseFloat()</span> if you need the price as a number.</p>
+<pre>const price = parseFloat(item.dataset.price);</pre>
+<hr/>
+<h3>Step 6: Add JavaScript Click Behavior</h3>
+<p>In <strong>menu-interact.js</strong>, attach event listeners to each menu item and to the confirm and remove buttons.</p>
+<pre>document.querySelectorAll('.menu-item').forEach(function(item) {
+  item.addEventListener('click', handleItemClick);
+
+  item.querySelector('.confirm-btn').addEventListener('click', confirmSelectedItem);
+  item.querySelector('.remove-btn').addEventListener('click', removeSelectedItem);
+});</pre>
+<p>When a menu item is clicked:</p>
+<ul>
+<li>Show the quantity input</li>
+<li>Show the confirm and remove buttons</li>
+<li>Add the selected class for visual feedback</li>
+<li>Log the clicked item information to the console</li>
+</ul>
+<pre>function handleItemClick(event) {
+  const item = event.currentTarget;
+
+  const name = item.dataset.name;
+  const price = parseFloat(item.dataset.price);
+  const category = item.dataset.category;
+
+  console.log(`Clicked: ${name} | Price: ${price} | Category: ${category}`);
+
+  const qtyInput = item.querySelector('.qty-input');
+  const confirmBtn = item.querySelector('.confirm-btn');
+  const removeBtn = item.querySelector('.remove-btn');
+
+  qtyInput.style.display = 'inline-block';
+  confirmBtn.style.display = 'inline-block';
+  removeBtn.style.display = 'inline-block';
+
+  item.classList.add('selected');
+  qtyInput.focus();
+}</pre>
+<hr/>
+<h3>Step 7: Confirm a Selection</h3>
+<p>When the confirm button is clicked, read the quantity and log the selected item information.</p>
+<p>Because the button is inside the menu item, use <span>event.stopPropagation()</span> so the menu item click handler does not run again.</p>
+<pre>function confirmSelectedItem(event) {
+  event.stopPropagation();
+
+  const item = event.target.closest('.menu-item');
+  const name = item.dataset.name;
+  const qtyInput = item.querySelector('.qty-input');
+  const qty = qtyInput.value;
+
+  console.log(`Updated quantity: ${name} x ${qty}`);
+}</pre>
+<hr/>
+<h3>Step 8: Remove a Selection</h3>
+<p>When the remove button is clicked, reset the item display and log that the item was removed.</p>
+<pre>function removeSelectedItem(event) {
+  event.stopPropagation();
+
+  const item = event.target.closest('.menu-item');
+  const name = item.dataset.name;
+
+  const qtyInput = item.querySelector('.qty-input');
+  const confirmBtn = item.querySelector('.confirm-btn');
+  const removeBtn = item.querySelector('.remove-btn');
+
+  qtyInput.value = '';
+  qtyInput.style.display = 'none';
+  confirmBtn.style.display = 'none';
+  removeBtn.style.display = 'none';
+
+  item.classList.remove('selected');
+
+  console.log(`Removed item: ${name}`);
+}</pre>
+<p class="callout">If clicking the ✔ or ✖ button causes the item to open or close again, your click event is also triggering the menu item. Add <span>event.stopPropagation()</span> inside your button event handler.</p>
+<hr/>
+<h3>Sample Site Images</h3>
+<p>The sample images below show the general idea. Your page should use your own menu items, prices, images, and styling.</p>
+<p><img alt="Sample interactive menu layout"  height="60%" src="../images/act9-img1.jpg" width="60%"/></p>
+<!--
+<p>Example of confirm and remove controls:</p>
+
+<p><img alt="Confirm and remove controls" height="15%" src="/images/act9-img2.jpg" width="15%"/></p>
+<p>Example of console output:</p>
+<p><img alt="Console output example"  height="40%" src="/images/act9-img3.jpg" width="40%"/></p>
+-->
+<hr/>
+<h3>Before You Finish</h3>
+<ul class="checklist">
+<li>[ ] You created <strong>menu-order.html</strong> with your header, navigation, and footer</li>
+<li>[ ] You created and linked <strong>style-menu-onid.css</strong></li>
+<li>[ ] You created and linked <strong>menu-interact.js</strong> using defer</li>
+<li>[ ] You grouped menu items using the menu-grid layout</li>
+<li>[ ] You included at least 4 entrées, 3 beverages, and 2 desserts</li>
+<li>[ ] Each item has data-name, data-price, and data-category</li>
+<li>[ ] Clicking an item shows the quantity input and controls</li>
+<li>[ ] Confirming an item logs the selected item and quantity</li>
+<li>[ ] Removing an item hides the input and controls</li>
+<li>[ ] Your console output is clear enough to help with debugging</li>
+</ul>
+<hr/>
+<h3>Coming Next</h3>
+<p>In Activity 10, you will store selected items in arrays and display them in the Live Order sidebar.</p>
+
+</main>
+<footer class="site-footer"><div>Backup copy for CS 290 HW4. Use Canvas for official submission when available.</div></footer>
+</body>
+</html>

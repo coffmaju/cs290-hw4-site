@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity 10 – Live Order Sidebar and Order Form</title>
+  <link rel="stylesheet" href="../css/cs290-hw4-backup.css">
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <h1>CS 290 HW4 Backup Materials</h1>
+  <p>Activities 9–12 and HW4 instructions</p>
+</div></header>
+<nav class="site-nav"><div class="site-nav-inner">
+  <a href="../index.html">Home</a>
+  <a href="../homework/cs290-hw4.html">HW4</a>
+  <a href="cs290-activity9.html">Activity 9</a>
+  <a href="cs290-activity10.html">Activity 10</a>
+  <a href="cs290-activity11.html">Activity 11</a>
+  <a href="cs290-activity12.html">Activity 12</a>
+</div></nav>
+<main class="content-page">
+
+<h2>Activity 10 – Live Order Sidebar and Order Form</h2>
+<p>In Activity 9, you created clickable menu items and logged selections to the console. In this activity, you will begin <strong>tracking selected items</strong> and displaying them in a <strong>Live Order sidebar</strong>.</p>
+<p>You will also move and update your existing order form so it works with your interactive menu.</p>
+<p class="callout"><strong>Important:</strong> In this activity, you are building the <strong>structure of the order</strong>. Do not calculate totals or display a receipt yet. That will be done in Activity 11.</p>
+<hr/>
+<h3>What You Will Build</h3>
+<ul>
+<li>A two-column layout with menu items on the left and a sidebar on the right</li>
+<li>A Live Order sidebar that updates as items are selected</li>
+<li>Arrays to store selected items</li>
+<li>An updated order form inside the sidebar</li>
+<li>A city selection using radio buttons</li>
+<li>A tip selection using a <code>&lt;select&gt;</code> menu</li>
+</ul>
+<hr/>
+<h3>Step 1: Update Your Layout</h3>
+<p>Your page should now use a two-column layout:</p>
+<ul>
+<li><strong>Left:</strong> Menu items</li>
+<li><strong>Right:</strong> Live Order + Order Form</li>
+</ul>
+<pre>&lt;div class="main-layout"&gt;
+
+  &lt;section class="menu-section"&gt;
+    &lt;!-- menu grids from Activity 9 --&gt;
+  &lt;/section&gt;
+
+  &lt;aside class="side-bar"&gt;
+    &lt;!-- Live Order + Form --&gt;
+  &lt;/aside&gt;
+
+&lt;/div&gt;</pre>
+<p class="callout"><strong>Important:</strong> The form should now be part of the sidebar, not below the menu.</p>
+<hr/>
+<h3>Step 2: Sidebar Layout Styling</h3>
+<pre>.main-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.menu-section {
+  flex: 3;
+}
+
+.side-bar {
+  flex: 1;
+  position: sticky;
+  top: 0;
+  border: 2px solid #XXX;
+  border-radius: YYpx;
+  padding: 1rem;
+  background-color: #XXX;
+}
+
+.order-form-section {
+  margin-top: 1.5rem;
+  border-top: 2px solid #XXX;
+  padding-top: 1rem;
+}</pre>
+<p>The <code>position: sticky;</code> rule helps keep the sidebar visible while the user scrolls through the menu. The <code>top: 0;</code> rule makes the sidebar stick at the top of the browser window.</p>
+<hr/>
+<h3>Step 3: Add the Live Order Section</h3>
+<pre>&lt;section class="live-order"&gt;
+  &lt;h2&gt;Live Order&lt;/h2&gt;
+
+  &lt;h3&gt;Entrées&lt;/h3&gt;
+  &lt;ul id="entree-list"&gt;&lt;/ul&gt;
+
+  &lt;h3&gt;Beverages&lt;/h3&gt;
+  &lt;ul id="beverage-list"&gt;&lt;/ul&gt;
+
+  &lt;h3&gt;Desserts&lt;/h3&gt;
+  &lt;ul id="dessert-list"&gt;&lt;/ul&gt;
+&lt;/section&gt;</pre>
+<p class="callout"><strong>Do not add a receipt section yet.</strong> The receipt and totals will be added in Activity 11.</p>
+<hr/>
+<h3>Step 4: Adapt Your Order Form</h3>
+<p>Move your existing order form into the sidebar below the Live Order section. You do <strong>not</strong> need to rebuild the whole form. Instead, update your existing form so it works with the new interactive menu page.</p>
+<ul>
+<li>Keep customer name and phone number.</li>
+<li>Remove or ignore the old entrée, beverage, and dessert dropdowns. Food items now come from the clickable menu cards.</li>
+<li>Keep your add-ons, but make sure each add-on has a price in your <code>priceMap</code>.</li>
+<li>If add-on prices are not visible to the customer, update the page so the customer can see them.</li>
+<li>Keep dining method.</li>
+<li>Add a city radio button group using the actual cities for your restaurant locations.</li>
+<li>Replace the tip radio buttons with a tip <code>&lt;select&gt;</code> menu.</li>
+</ul>
+<h4>City Selection</h4>
+<pre>&lt;fieldset class="city-fieldset"&gt;
+  &lt;legend&gt;City&lt;/legend&gt;
+
+  &lt;div class="city-options"&gt;
+    &lt;label&gt;
+      &lt;input type="radio" name="city" value="Corvallis" required&gt;
+      Corvallis
+    &lt;/label&gt;
+
+    &lt;label&gt;
+      &lt;input type="radio" name="city" value="Golden"&gt;
+      Golden
+    &lt;/label&gt;
+
+    &lt;label&gt;
+      &lt;input type="radio" name="city" value="Arcata"&gt;
+      Arcata
+    &lt;/label&gt;
+  &lt;/div&gt;
+&lt;/fieldset&gt;</pre>
+<p class="callout"><strong>Important:</strong> Add radio buttons for all of your restaurant locations. The <code>value</code> of each city must exactly match the city name used in your <code>taxRates</code> object from HW 3.</p>
+<p>To display the city radio buttons horizontally, add this CSS:</p>
+<pre>.city-options {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.city-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}</pre>
+<h4>Tip Selection</h4>
+<pre>&lt;label for="tipPercent"&gt;Tip:&lt;/label&gt;
+&lt;select id="tipPercent" name="tipPercent"&gt;
+  &lt;option value="0"&gt;No tip&lt;/option&gt;
+  &lt;option value="10"&gt;10%&lt;/option&gt;
+  &lt;option value="15" selected&gt;15%&lt;/option&gt;
+  &lt;option value="18"&gt;18%&lt;/option&gt;
+  &lt;option value="20"&gt;20%&lt;/option&gt;
+  &lt;option value="25"&gt;25%&lt;/option&gt;
+&lt;/select&gt;</pre>
+<p class="callout"><strong>Tip requirements:</strong></p>
+<ul>
+<li>Use <code>id="tipPercent"</code> and <code>name="tipPercent"</code>.</li>
+<li>Include <strong>No tip</strong> with value <code>0</code>.</li>
+<li>Include <strong>10%</strong> with value <code>10</code>.</li>
+<li>Add at least <strong>three additional tip options</strong>.</li>
+<li>Use <code>selected</code> to set a default tip option.</li>
+<li>Store values as whole numbers, such as <code>15</code> for 15%.</li>
+</ul>
+<hr/>
+<h3>Step 5: Create Arrays for Selected Items</h3>
+<p>At the top of <strong>menu-interact.js</strong>, create arrays to store the menu items selected on this page.</p>
+<pre>let entrees = [];
+let beverages = [];
+let desserts = [];</pre>
+<p>Each selected item should be stored as an object with a name, price, and quantity.</p>
+<pre>{
+  name: "Veggie Mac",
+  price: 8.00,
+  quantity: 2
+}</pre>
+<p class="callout"><strong>Important:</strong> These arrays are local to <code>menu-interact.js</code>. They store the current order as the user clicks menu items on this page. They are not the same as the sample order data in <code>orders.js</code>.</p>
+<hr/>
+<h3>Step 6: Update Confirm Behavior</h3>
+<p>In Activity 9, the confirm button logged the selected item to the console. Now the confirm button should also prepare the item to be stored in the correct array.</p>
+<p>First, make sure your confirm button event listener is still connected:</p>
+<pre>item.querySelector('.confirm-btn').addEventListener('click', confirmSelectedItem);</pre>
+<p>When the confirm button is clicked, the browser calls <code>confirmSelectedItem</code> and automatically passes in an event object.</p>
+<pre>function confirmSelectedItem(event) {
+  event.stopPropagation();
+
+  const item = event.target.closest('.menu-item');
+
+  const name = item.dataset.name;
+  const price = parseFloat(item.dataset.price);
+  const category = item.dataset.category;
+
+  const qtyInput = item.querySelector('.qty-input');
+  const quantity = parseInt(qtyInput.value);
+
+  // TODO: Validate quantity
+  // Hint:
+  // If quantity is not a number OR less than 1,
+  // log a message and stop the function using return.
+
+  const selectedItem = {
+    name: name,
+    price: price,
+    quantity: quantity
+  };
+
+  updateSelectedArray(category, selectedItem);
+  updateLiveOrder();
+
+  console.log(`Confirmed: ${name} x ${quantity}`);
+}</pre>
+<p class="callout"><strong>Validation hint:</strong> Use <code>isNaN(quantity)</code> to check whether the quantity is not a number. Also check whether <code>quantity &lt; 1</code>. If the quantity is invalid, use <code>console.log(...)</code> and then <code>return;</code>. The <code>return</code> statement stops the function early so the invalid item is not added to the order.</p>
+<p class="callout"><strong>Why do we use <code>event.stopPropagation()</code>?</strong> The confirm button is inside the menu item. Without this line, clicking Confirm may also trigger the menu item's click event again.</p>
+<hr/>
+<h3>Step 7: Add or Update Items in the Correct Array</h3>
+<p>Create a helper function named <code>updateSelectedArray</code>. This function should decide which array to use based on the item category.</p>
+<p>The entrée case is shown completely. Repeat the same pattern for beverages and desserts.</p>
+<pre>function updateSelectedArray(category, selectedItem) {
+
+  if (category === "entree") {
+
+    const existingItem = entrees.find(function(item) {
+      return item.name === selectedItem.name;
+    });
+
+    if (existingItem) {
+      existingItem.quantity = selectedItem.quantity;
+    } else {
+      entrees.push(selectedItem);
+    }
+
+  } else if (category === "beverage") {
+
+    // TODO:
+    // Repeat the same pattern using the beverages array.
+
+  } else if (category === "dessert") {
+
+    // TODO:
+    // Repeat the same pattern using the desserts array.
+
+  }
+}</pre>
+<p class="callout"><strong>Two different checks are happening:</strong><br/><br/>First, <code>confirmSelectedItem</code> checks whether the quantity is valid. If the quantity is not valid, the function stops before calling <code>updateSelectedArray</code>.<br/><br/>Then, <code>updateSelectedArray</code> checks whether the item already exists in the correct array. If it exists, update the quantity. If it does not exist, add the item.</p>
+<hr/>
+<h3>Step 8: Display the Live Order</h3>
+<p>Create a function that updates the three sidebar lists. This function should be called after an item is confirmed or removed.</p>
+<pre>function updateLiveOrder() {
+  updateList("entree-list", entrees);
+  updateList("beverage-list", beverages);
+  updateList("dessert-list", desserts);
+}
+
+function updateList(listId, items) {
+  const list = document.getElementById(listId);
+  list.innerHTML = "";
+
+  items.forEach(function(item) {
+    const li = document.createElement("li");
+    li.textContent = `${item.name} x ${item.quantity}`;
+    list.appendChild(li);
+  });
+}</pre>
+<p class="callout"><strong>Note:</strong> Setting <code>list.innerHTML = ""</code> clears the old list before rebuilding it. This keeps the sidebar from showing duplicate or outdated items.</p>
+<hr/>
+<h3>Step 9: Update Remove Behavior</h3>
+<p>When the remove button is clicked, remove the item from the correct array and update the Live Order sidebar.</p>
+<pre>function removeSelectedItem(event) {
+  event.stopPropagation();
+
+  const item = event.target.closest('.menu-item');
+
+  const name = item.dataset.name;
+  const category = item.dataset.category;
+
+  removeFromSelectedArray(category, name);
+
+  const qtyInput = item.querySelector('.qty-input');
+  const confirmBtn = item.querySelector('.confirm-btn');
+  const removeBtn = item.querySelector('.remove-btn');
+
+  qtyInput.value = "";
+  qtyInput.style.display = "none";
+  confirmBtn.style.display = "none";
+  removeBtn.style.display = "none";
+
+  item.classList.remove("selected");
+
+  updateLiveOrder();
+
+  console.log(`Removed item: ${name}`);
+}</pre>
+<p>Now create a helper function to remove the item from the correct array. The entrée case is shown completely. Repeat the same pattern for beverages and desserts.</p>
+<pre>function removeFromSelectedArray(category, name) {
+
+  if (category === "entree") {
+
+    // Remove the item from the entrees array
+    entrees = entrees.filter(function(item) {
+      return item.name !== name;
+    });
+
+  } else if (category === "beverage") {
+
+    // TODO:
+    // Repeat the same pattern using the beverages array.
+
+  } else if (category === "dessert") {
+
+    // TODO:
+    // Repeat the same pattern using the desserts array.
+
+  }
+}</pre>
+<p class="callout"><strong>Note:</strong> The <code>filter()</code> method creates a new array that keeps only the items that do <strong>not</strong> match the selected name. This removes the selected item from the order.</p>
+<hr/>
+<h3>Step 10: Button Styling Reminder</h3>
+<p>Your confirm and remove buttons should use the same class names from Activity 9:</p>
+<ul>
+<li><code>confirm-btn</code></li>
+<li><code>remove-btn</code></li>
+</ul>
+<p>You may choose your own colors, but users should be able to clearly tell the difference between confirming and removing an item.</p>
+<hr/>
+<h3>Before You Finish</h3>
+<ul class="checklist">
+<li>[ ] Your page uses a two-column layout with the menu on the left and sidebar on the right</li>
+<li>[ ] The sidebar contains a Live Order section</li>
+<li>[ ] The sidebar contains the adapted order form</li>
+<li>[ ] The form includes name, phone, city, add-ons, dining method, and tip</li>
+<li>[ ] The tip input is a <code>&lt;select&gt;</code> menu</li>
+<li>[ ] The city input uses radio buttons</li>
+<li>[ ] Confirming an item adds it to the correct array</li>
+<li>[ ] Confirming an item updates the correct Live Order list</li>
+<li>[ ] Removing an item removes it from the correct array</li>
+<li>[ ] Removing an item updates the Live Order list</li>
+<li>[ ] No receipt or total is required yet</li>
+</ul>
+<hr/>
+<h3>Coming Next</h3>
+<p>In Activity 11, you will use the selected item arrays and form values to build a complete order object. You will then calculate the subtotal, tip, tax, delivery fee, and total, and display a formatted receipt.</p>
+
+</main>
+<footer class="site-footer"><div>Backup copy for CS 290 HW4. Use Canvas for official submission when available.</div></footer>
+</body>
+</html>

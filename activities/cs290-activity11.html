@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity 11 – Build Order Object + Full Receipt Preview</title>
+  <link rel="stylesheet" href="../css/cs290-hw4-backup.css">
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <h1>CS 290 HW4 Backup Materials</h1>
+  <p>Activities 9–12 and HW4 instructions</p>
+</div></header>
+<nav class="site-nav"><div class="site-nav-inner">
+  <a href="../index.html">Home</a>
+  <a href="../homework/cs290-hw4.html">HW4</a>
+  <a href="cs290-activity9.html">Activity 9</a>
+  <a href="cs290-activity10.html">Activity 10</a>
+  <a href="cs290-activity11.html">Activity 11</a>
+  <a href="cs290-activity12.html">Activity 12</a>
+</div></nav>
+<main class="content-page">
+
+<h2>Activity 11 – Build Order Object + Full Receipt Preview</h2>
+<p><strong>Time:</strong> 2 class periods</p>
+<p>In Activity 10, you built an interactive menu where users select items and see them appear in a Live Order sidebar.</p>
+<p>In this activity, you will connect that work to your HW3 code. You will build an order object from the webpage and reuse your existing functions to compute and display a full receipt.</p>
+<div class="callout"><strong>Big Idea:</strong><br/>Activity 10 = what the user selected (data)<br/>Activity 11 = compute and display results from that data</div>
+<hr/>
+<h3>Step 1: Load Both JavaScript Files</h3>
+<p>Your page now uses two JavaScript files:</p>
+<ul>
+<li>
+<p><strong>process-orders.js</strong> → contains your HW3 calculation functions</p>
+</li>
+<li><strong>menu-interact.js</strong> → contains your menu and form logic</li>
+</ul>
+<pre>&lt;script src="js/process-orders.js" defer&gt;&lt;/script&gt;
+&lt;script src="js/menu-interact.js" defer&gt;&lt;/script&gt;</pre>
+<p><strong>Important:</strong> The order matters. The processing file must load first so its functions can be used later.</p>
+<hr/>
+<h3>Step 2: Update priceMap</h3>
+<p>The receipt functions use <code>priceMap</code> to look up prices. This means the names must match exactly.</p>
+<p><strong>Rule:</strong> The value in <code>data-name</code> must match the key in <code>priceMap</code>.</p>
+<p>This is how your program connects what the user clicks to the correct price.</p>
+<hr/>
+<h3>Step 3: Review the Order Object</h3>
+<p>Your order must match the HW3 format so your existing functions work correctly.</p>
+<pre>{
+  customer: "Name",
+  date: "YYYY-MM-DD",
+  city: "Corvallis",
+  delivery: true,
+  tipPercent: 15,
+  entrees: [...],
+  drinks: [...],
+  desserts: [...],
+  addOns: [...]
+}</pre>
+<p><strong>Important:</strong> You are not creating a new format. You are reusing the same structure from HW3.</p>
+<hr/>
+<h3>Step 4: Helper Functions</h3>
+<p>These functions collect small pieces of data that you will use later.</p>
+<pre>function getTodayDateString() {
+  const today = new Date();
+  return today.toISOString().split("T")[0];
+}</pre>
+<p>This converts today's date into the same format used in HW3.</p>
+<pre>function getSelectedAddOns() {
+  const addOnsList = document.querySelectorAll('input[name="addOns"]:checked');
+  const addOns = [];
+
+  addOnsList.forEach(function(item) {  
+    addOns.push({
+      name: item.value,
+      price: parseFloat(item.dataset.price),
+      quantity: 1
+    });
+  });
+
+  return addOns;
+}</pre>
+<p>This collects all checked add-ons into an array of objects.</p>
+<p class="callout important"><strong>Important:</strong> Each add-on checkbox must include a <code>data-price</code> attribute. If <code>data-price</code> is missing, your program will produce <code>NaN</code> values and your totals will be incorrect.</p>
+<p><strong>Example:</strong></p>
+<pre>&lt;input type="checkbox" name="addOns" value="Avocado" data-price="1.25"&gt;</pre>
+<p><strong>Note:</strong> Add-ons are stored with a quantity of 1. This keeps the data structure consistent with other menu items. In a more advanced version of this project, users could select quantities for add-ons as well.</p>
+<div class="callout important"><strong>Important:</strong> Add-ons are now stored as objects with <code>name</code>, <code>price</code>, and <code>quantity</code>. <br/>Make sure your subtotal function includes <code>order.addOns</code> just like entrées, drinks, and desserts.</div>
+<p><strong>Example:</strong></p>
+<pre>addItems(order.entrees, "entree");
+addItems(order.drinks, "drink");
+addItems(order.desserts, "dessert");
+addItems(order.addOns, "add-on");</pre>
+    If your subtotal does not include add-ons, your receipt totals will not match the PHP result.
+    <hr/>
+<h3>Step 5: Build the Order Object</h3>
+<p>This is the most important step. You are combining form inputs and menu selections (arrays). The goal is to produce a complete order object.</p>
+<p class="callout"><strong>Update from earlier activities:</strong> If your form uses the <code>required</code> attribute for radio buttons, remove it and instead add a default selection using <code>checked</code> on one option in each group (city and dining method).</p>
+<pre>function buildOrderObject() {
+  const selectedCity = document.querySelector('input[name="city"]:checked');
+  const selectedDiningMethod = document.querySelector('input[name="diningMethod"]:checked');
+
+  const diningMethod = selectedDiningMethod ? selectedDiningMethod.value : "pickup";
+
+  const order = {
+    customer: document.getElementById("customerName").value,
+    // TODO: phone
+    // TODO: date
+    // TODO: city
+    // TODO: delivery (true/false)
+    diningMethod: diningMethod,	
+    tipPercent: parseFloat(document.getElementById("tipPercent").value),
+
+    entrees: entrees,
+    drinks: beverages,
+    desserts: desserts,
+
+    // TODO: addOns
+  };
+
+  return order;
+}</pre>
+<p><strong>Concept:</strong> You are transforming user input into a structured object that your program can use.</p>
+<hr/>
+<h3>Step 6: Modify printReceipt()</h3>
+<p>In HW3, your function printed each line separately using <code>console.log()</code>.</p>
+<p>In this activity, you will change <code>printReceipt()</code> so it builds and returns one receipt string.</p>
+<ul>
+<li>Create one string variable called <code>receipt</code></li>
+<li>Add lines to the string using <code>+=</code></li>
+<li>Use <code>\n</code> to move to a new line</li>
+<li>Use <code>\n\n</code> if you want a blank line between sections</li>
+<li>Use <code>console.log(receipt)</code> for debugging</li>
+<li>Return the finished string using <code>return receipt</code></li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre>let receipt = "";
+
+receipt += "BYTE BISTRO RECEIPT - " + order.customer + "\n";
+receipt += "Date: " + order.date + "\n\n";
+
+// You may format the item lines however you prefer.
+// The receipt must include items, quantities, subtotal, tax, tip,
+// delivery fee if applicable, and total.
+
+console.log(receipt);
+return receipt;</pre>
+<p><strong>Important:</strong> Your exact spacing and layout may look different from the example. That is okay. The important part is that your receipt includes the required information and the totals are correct.</p>
+<p><strong>Concept:</strong> Instead of printing step-by-step, you build the final result first and then display it.</p>
+<hr/>
+<h3>
+Step 7: Add the Receipt Preview Section</h3>
+<p>You will display the receipt in a dedicated section in your sidebar.
+
+This section should be placed directly <strong>below your Live Order</strong>, so users can preview their receipt while reviewing their selections.</p>
+<hr/>
+<h4>Example Structure</h4>
+<pre>&lt;section class="receipt"&gt;
+  &lt;h2&gt;Receipt Preview&lt;/h2&gt;
+
+  &lt;pre id="receiptOutput"&gt;&lt;/pre&gt;
+
+  &lt;button type="button" id="previewBtn"&gt;Preview Receipt&lt;/button&gt;
+&lt;/section&gt;</pre>
+<hr/>
+<h4>How it Works</h4>
+<ul>
+<li>The <code>&lt;pre&gt;</code> element displays the receipt text</li>
+<li>The button will trigger your <code>previewReceipt()</code> function</li>
+<li>The <code>id="receiptOutput"</code> must match your JavaScript exactly</li>
+<li>You can add style to the receipt section using CSS</li>
+</ul>
+<hr/>
+<h4>Why use &lt;pre&gt;?</h4>
+<p>The <code>&lt;pre&gt;</code> (preformatted text) element preserves spacing and line breaks.</p>
+<p>This is important because your receipt is built as a multi-line string using <code>\n</code>:</p>
+<pre>receipt += "Item 1\n";
+receipt += "Item 2\n";</pre>
+<p>Using a normal element like <code>&lt;div&gt;</code> would collapse the spacing, but <code>&lt;pre&gt;</code> keeps the formatting exactly as written.</p>
+<hr/>
+<div class="callout">
+<strong>Design Note:</strong><br/>
+The Preview Receipt button is <strong>not</strong> part of the form.
+It should be placed in this receipt section, not at the bottom of the form.
+<ul>
+<li>Select items → see them in the Live Order</li>
+<li>Click Preview → immediately see the receipt below</li>
+</ul>
+
+This keeps the action and the result close together and avoids unnecessary scrolling.
+</div>
+<hr/>
+<h4>Quick Check</h4>
+<ul>
+<li>Did you place the receipt section below your Live Order?</li>
+<li>Did you include <code>&lt;pre id="receiptOutput"&gt;&lt;/pre&gt;</code>?</li>
+<li>Is the <code>id</code> spelled exactly the same in your JavaScript?</li>
+</ul>
+<hr/>
+<h3>Step 8: Write previewReceipt()</h3>
+<p>Now that your page has a receipt preview section, write the function that fills it.</p>
+<p>The <code>previewReceipt()</code> function runs when the user clicks the <strong>Preview Receipt</strong> button.</p>
+<pre>function previewReceipt() {
+  const order = buildOrderObject();
+
+  const receipt = printReceipt(order, priceMap);
+
+  document.getElementById("receiptOutput").textContent = receipt;
+}</pre>
+<div class="callout">
+<strong>Big idea:</strong><br/>
+This function connects your data, calculations, and page display.
+</div>
+<h4>What each line does</h4>
+<pre>const order = buildOrderObject();</pre>
+<p>Builds one complete order object from the current form values and selected menu items.</p>
+<pre>const receipt = printReceipt(order, priceMap);</pre>
+<p>Sends the order object to your receipt function. The receipt function calculates the totals and returns one formatted string.</p>
+<pre>document.getElementById("receiptOutput").textContent = receipt;</pre>
+<p>Displays the receipt string inside the <code>&lt;pre id="receiptOutput"&gt;</code> element you added in Step 7.</p>
+<h4>Data Flow</h4>
+<pre>User selections + form inputs
+        ↓
+buildOrderObject()
+        ↓
+order object
+        ↓
+printReceipt(order, priceMap)
+        ↓
+receipt string
+        ↓
+receiptOutput</pre>
+<div class="callout important">
+<strong>Important:</strong><br/>
+<code>previewReceipt()</code> does not submit the form. It only previews the receipt on the current page.
+</div>
+<hr/>
+<h3>Step 9: Connect the Preview Button</h3>
+<p>Now connect your Preview Receipt button to the <code>previewReceipt()</code> function.</p>
+<pre>document.getElementById("previewBtn").addEventListener("click", previewReceipt);</pre>
+<p>This means:</p>
+<ul>
+<li>When the user clicks the button</li>
+<li>The <code>previewReceipt()</code> function runs</li>
+<li>The receipt is displayed in the preview section</li>
+</ul>
+<hr>
+<div class="callout important">
+<strong>Important</strong>
+Make sure your button has <code>id="previewBtn"</code>and <code>type="button"</code>.
+</div>
+<h4>Quick Test</h4>
+<ul>
+<li>Select at least one item</li>
+<li>Click <strong>Preview Receipt</strong></li>
+<li>You should see the receipt appear in your preview section</li>
+</ul>
+<p>In the next activity, you will submit this order to a server and compare the results.</p>
+<hr/>
+<h3>Step 10: What Your Receipt Must Include</h3>
+<ul>
+<li>Items and quantities</li>
+<li>Add-ons</li>
+<li>Subtotal</li>
+<li>Tax (based on city)</li>
+<li>Tip</li>
+<li>Delivery fee</li>
+<li>Total</li>
+</ul>
+<hr/>
+<h3>Before You Finish</h3>
+<ul class="checklist">
+<li>[ ] priceMap matches menu</li>
+<li>[ ] Order object matches HW3 format</li>
+<li>[ ] printReceipt returns a string</li>
+<li>[ ] Receipt appears on page</li>
+<li>[ ] Preview button displays the receipt</li>
+</ul>
+<p>Below are screenshots of the demo shown in class. Your style and layout may be different but all functions the same.</p>
+<h3>Sample Site Images</h3>
+<p>The sample images below show the general idea. Your page should use your own menu items, prices, images, and styling.</p>
+<p><img alt="Sample interactive menu layout"  height="30%" src="../images/act11-img2.jpg" />
+<img alt="Sample interactive menu layout"  height="30%" src="../images/act11-img1.jpg" /></p>
+</hr>
+</main>
+<footer class="site-footer"><div>Backup copy for CS 290 HW4. Use Canvas for official submission when available.</div></footer>
+</body>
+</html>

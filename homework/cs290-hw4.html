@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cs290-hw4.html</title>
+  <link rel="stylesheet" href="../css/cs290-hw4-backup.css">
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <h1>CS 290 HW4 Backup Materials</h1>
+  <p>Activities 9–12 and HW4 instructions</p>
+</div></header>
+<nav class="site-nav"><div class="site-nav-inner">
+  <a href="../index.html">Home</a>
+  <a href="cs290-hw4.html">HW4</a>
+  <a href="../activities/cs290-activity9.html">Activity 9</a>
+  <a href="../activities/cs290-activity10.html">Activity 10</a>
+  <a href="../activities/cs290-activity11.html">Activity 11</a>
+  <a href="../activities/cs290-activity12.html">Activity 12</a>
+</div></nav>
+<main class="content-page">
+
+<h3>Overview</h3>
+<p>In this assignment, you will redesign your restaurant ordering page to make it more <strong>user-friendly</strong> based on good web development practices. In real software development, <strong>usability</strong> matters as much as functionality. You are now improving your website to make it easier for customers to build, preview, and submit their order.</p>
+<p>In HW4, you will enhance your Byte Bistro website by creating an interactive ordering experience using JavaScript. You will also connect the order form to <code>menu-order.php</code> by submitting a JSON version of the order.</p>
+<hr/>
+<h3>Requirements</h3>
+<ul>
+<li>A <strong>menu</strong> and <strong>order form</strong> together on a single page</li>
+<li><strong>Clickable</strong> entrée, dessert, and beverage menu items</li>
+<li><strong>Quantity input</strong> appears next to each selected item</li>
+<li>A <strong>Live Order</strong> or <strong>Selected Items</strong> area organized by entrée, beverage, and dessert sections</li>
+<li>A <strong>Preview Receipt</strong> button</li>
+<li><strong>Receipt printed to the console</strong> for the developer view</li>
+<li><strong>Receipt printed into the DOM</strong> for the customer view</li>
+<li>Receipt includes subtotal, tax, tip, delivery fee, and total</li>
+<li>Ability to <strong>update the order after previewing</strong>; the order should not be locked after the first preview</li>
+<li>Final order is submitted to the server as JSON</li>
+<li><code>menu-order.php</code> displays a confirmation page and calculates totals using the submitted order data</li>
+</ul>
+<h4>Customers will be able to:</h4>
+<ul>
+<li>Select items by clicking on menu cards (Activity 9)</li>
+<li>Specify quantities and see selected items in a sidebar (Activity 10)</li>
+<li>Generate a structured JavaScript order object and display a formatted receipt (Activity 11)</li>
+<li>Submit the order using a standard HTML form along with a JSON version of the order (Activity 12)</li>
+</ul>
+<p>This assignment builds on your work from HW2 and HW3 and includes Activities 9, 10, 11, and 12.</p>
+<hr/>
+<h3>What You’ll Implement</h3>
+<h4>1) Activity 9: Clickable Menu Items</h4>
+<ul>
+<li>Create or update <code>menu-order.html</code> with a grid layout</li>
+<li>Create clickable menu cards for entrées, beverages, and desserts</li>
+<li>Clicking a menu card toggles selection and shows the quantity input and action buttons</li>
+<li>Use <code>data-name</code>, <code>data-price</code>, and <code>data-category</code> attributes</li>
+<li>Log item name, category, price, and quantity to the console while testing</li>
+</ul>
+<h4>2) Activity 10: Live Order Sidebar</h4>
+<ul>
+<li>Add a <strong>live-updating sidebar</strong> that shows item name and quantity as the user builds the order</li>
+<li>Group sidebar items by category: entrées, beverages, and desserts</li>
+<li>Create arrays to track selected items</li>
+<li>Each selected item should store its <code>name</code>, <code>price</code>, and <code>quantity</code></li>
+<li>Allow users to confirm, update, or remove selected items</li>
+<li>Move or adapt the order form so it appears with the sidebar</li>
+</ul>
+<h4>3) Activity 11: Build Order Object + Receipt Preview</h4>
+<ul>
+<li>Build a structured JavaScript order object using the HW3 order format</li>
+<li>Include customer name, date, city, delivery status, tip percent, entrées, drinks, desserts, and add-ons</li>
+<li>Update <code>priceMap</code> so it matches the item names and prices on your current menu</li>
+<li>Reuse your <code>process-orders.js</code> functions from HW3</li>
+<li>Modify <code>printReceipt()</code> so it builds one receipt string, logs it to the console, and returns the string</li>
+<li>Display the returned receipt string inside the page using <code>&lt;pre id="receiptOutput"&gt;&lt;/pre&gt;</code></li>
+<li>Receipt must include subtotal, tax, tip, delivery fee, and total</li>
+</ul>
+<h4>4) Activity 12: Submit Order JSON to PHP</h4>
+<ul>
+<li>Add hidden inputs for <code>orderJson</code> and <code>taxRate</code></li>
+<li>Use <code>JSON.stringify(order)</code> to place the order object into the hidden input before submission</li>
+<li>Use <code>taxRates[order.city]</code> to place the selected city’s tax rate into the hidden input</li>
+<li>Submit the form to <code>menu-order.php</code></li>
+<li>Use <code>target="_blank"</code> so the PHP confirmation page opens in a new tab for comparison</li>
+<li>Use the provided generic <code>menu-order.php</code> file</li>
+<li>Add your own stylesheet links, header, navigation bar, and footer to <code>menu-order.php</code> so it matches the rest of your site</li>
+<li>Compare the JavaScript receipt preview with the PHP confirmation page</li>
+</ul>
+<p class="callout"><strong>Important:</strong> The provided <code>menu-order.php</code> file handles the PHP processing logic. Your job is to send the correct data and style the confirmation page so it fits your Byte Bistro site.</p>
+<hr/>
+<h3>Submission Instructions</h3>
+<p>Submit a <strong>ZIP file</strong> containing your full project folder, including:</p>
+<ul>
+<li><code>menu-order.html</code></li>
+<li>All CSS files, including <code>style.css</code>, <code>style-custom-onid.css</code>, and <code>style-menu-onid.css</code></li>
+<li>All JavaScript files, including <code>menu-interact.js</code>, <code>process-orders.js</code>, and <code>orders.js</code></li>
+<li><code>menu-order.php</code></li>
+<li>Your <code>images/</code> folder with all food item images</li>
+</ul>
+<p>In the submission comments:</p>
+<ul>
+<li>Include the <strong>URL to your live site</strong> hosted on the ENGR server</li>
+<li>Note anything that is incomplete or not working as expected</li>
+</ul>
+<hr/>
+<h3>Grading Checklist</h3>
+<ul class="checklist">
+<li>[ ] Menu items are clickable and toggle selection correctly</li>
+<li>[ ] Quantity inputs appear and are editable</li>
+<li>[ ] Confirming an item adds or updates it in the Live Order sidebar</li>
+<li>[ ] Removing an item removes it from the Live Order sidebar</li>
+<li>[ ] Sidebar preview is grouped by entrées, beverages, and desserts</li>
+<li>[ ] Order object is constructed correctly and follows the HW3 format</li>
+<li>[ ] Selected item objects include name, price, and quantity</li>
+<li>[ ] Customer form contains name, phone, city, add-ons, dining method, tip, preview receipt button, and submit order button</li>
+<li>[ ] <code>priceMap</code> matches the current menu item names and prices</li>
+<li>[ ] <code>printReceipt()</code> logs the receipt to the console and returns a receipt string</li>
+<li>[ ] Receipt displays in the DOM for the customer view</li>
+<li>[ ] Receipt includes subtotal, tax, tip, delivery fee if applicable, and total</li>
+<li>[ ] Order can be updated after previewing</li>
+<li>[ ] Hidden input <code>orderJson</code> is filled before submission</li>
+<li>[ ] Hidden input <code>taxRate</code> is filled before submission</li>
+<li>[ ] Form submits to <code>menu-order.php</code></li>
+<li>[ ] PHP confirmation page opens in a new tab</li>
+<li>[ ] PHP confirmation results match the JavaScript receipt preview</li>
+<li>[ ] <code>menu-order.php</code> includes your stylesheet links, header, navigation bar, and footer</li>
+<li>[ ] Pages are clean, styled, and visually consistent with previous work</li>
+</ul>
+
+</main>
+<footer class="site-footer"><div>Backup copy for CS 290 HW4. Use Canvas for official submission when available.</div></footer>
+</body>
+</html>
