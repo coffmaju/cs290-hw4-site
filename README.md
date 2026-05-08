@@ -12,7 +12,7 @@ These materials are provided in case Canvas is unavailable.
 
 ## GitHub Pages Site
 
-https://YOURUSERNAME.github.io/cs290-hw4-site/
+https://coffmaju.github.io/cs290-hw4-site/
 
 ## Notes
 
