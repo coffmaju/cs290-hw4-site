@@ -75,6 +75,7 @@ body {
 }
 
 main.content-page {
+  background: white;
   max-width: var(--page-width);
   margin: 0 auto;
   padding: 1.5rem 1rem 3rem;
