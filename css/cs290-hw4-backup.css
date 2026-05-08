@@ -169,7 +169,7 @@ a:hover, a:focus { color: var(--osu-orange); }
   border-left: 6px solid var(--osu-orange);
   padding: 1rem;
   border-radius: 8px;
-  background: #fff;
+  background: var(--soft-orange);
 }
 
 .index-card h2 {
